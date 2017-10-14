@@ -12,7 +12,13 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    
+
+    bookshelfs: [
+      "Currently Reading",
+      "Want to Read",
+      "Read"
+    ],
+
     bookDataCurrently: [
       {
         "cover": {
@@ -33,7 +39,7 @@ class BooksApp extends React.Component {
         "authors": "Orson Scott Card"
       }
     ],
-    
+
     bookDataWantToRead: [
       {
         "cover": {
@@ -54,7 +60,7 @@ class BooksApp extends React.Component {
         "authors": "J.K. Rowling"
       }
     ],
-    
+
     bookDataRead: [
       {
         "cover": {
@@ -116,9 +122,9 @@ class BooksApp extends React.Component {
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-                <Bookshelf bookDataArr={this.state.bookDataCurrently} title={"Currently Reading"}/>
-                <Bookshelf bookDataArr={this.state.bookDataWantToRead} title={"Want to Read"}/>
-                <Bookshelf bookDataArr={this.state.bookDataRead} title={"Read"}/>
+                <Bookshelf bookDataArr={this.state.bookDataCurrently} bookshelfs={this.state.bookshelfs} index={0} />
+                <Bookshelf bookDataArr={this.state.bookDataWantToRead} bookshelfs={this.state.bookshelfs} index={1} />
+                <Bookshelf bookDataArr={this.state.bookDataRead} bookshelfs={this.state.bookshelfs} index={2} />
             </div>
             <div className="open-search">
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>

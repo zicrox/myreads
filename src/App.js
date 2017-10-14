@@ -14,12 +14,21 @@ class BooksApp extends React.Component {
     showSearchPage: false,
 
     bookshelfs: [
-      "Currently Reading",
-      "Want to Read",
-      "Read"
+      {
+        "title":"Currently Reading",
+        "key":"currently"
+      },
+      {
+        "title":"Want to Read",
+        "key":"wantToRead"
+      },
+      {
+        "title":"Read",
+        "key":"read"
+      }
     ],
 
-    bookDataCurrently: [
+    currently: [
       {
         "cover": {
           "width": 128,
@@ -40,7 +49,7 @@ class BooksApp extends React.Component {
       }
     ],
 
-    bookDataWantToRead: [
+    wantToRead: [
       {
         "cover": {
           "width": 128,
@@ -61,7 +70,7 @@ class BooksApp extends React.Component {
       }
     ],
 
-    bookDataRead: [
+    read: [
       {
         "cover": {
           "width": 128,
@@ -122,9 +131,13 @@ class BooksApp extends React.Component {
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-                <Bookshelf bookDataArr={this.state.bookDataCurrently} bookshelfs={this.state.bookshelfs} index={0} />
-                <Bookshelf bookDataArr={this.state.bookDataWantToRead} bookshelfs={this.state.bookshelfs} index={1} />
-                <Bookshelf bookDataArr={this.state.bookDataRead} bookshelfs={this.state.bookshelfs} index={2} />
+              {this.state.bookshelfs.map((bookshelf) => (
+                <Bookshelf key={bookshelf.key}
+                  books={this.state[bookshelf.key]}
+                  bookshelfs={this.state.bookshelfs}
+                  bookshelf={bookshelf}
+                />
+              ))}
             </div>
             <div className="open-search">
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>

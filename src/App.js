@@ -101,6 +101,17 @@ class BooksApp extends React.Component {
     ]
   }
 
+  moveBook = (event, bookshelf, book) => {
+    const bookshelfDestiny = event.target.value;
+    this.setState((state) => ({
+      // Add
+      //[bookshelfDestiny]: [...state[bookshelfDestiny], book]
+      [bookshelfDestiny]: state[bookshelfDestiny].concat(book),
+      // Remove
+      [bookshelf.key]: state[bookshelf.key].filter((b) => b.title !== book.title)
+    }))
+  }
+
   render() {
     return (
       <div className="app">
@@ -136,6 +147,7 @@ class BooksApp extends React.Component {
                   books={this.state[bookshelf.key]}
                   bookshelfs={this.state.bookshelfs}
                   bookshelf={bookshelf}
+                  onMoveBook={this.moveBook}
                 />
               ))}
             </div>

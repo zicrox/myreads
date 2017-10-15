@@ -5,7 +5,11 @@ const Book = (props) => (
   <div className="book">
     <div className="book-top">
       <div className="book-cover" style={props.book.cover}></div>
-      <BookshelfChanger bookshelfs={props.bookshelfs} bookshelf={props.bookshelf} />
+      <BookshelfChanger
+        bookshelfs={props.bookshelfs}
+        bookshelf={props.bookshelf}
+        book={props.book}
+        onMoveBook={props.onMoveBook} />
     </div>
     <div className="book-title">{props.book.title}</div>
     <div className="book-authors">{props.book.authors}</div>

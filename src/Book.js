@@ -12,7 +12,9 @@ const Book = (props) => (
         onMoveBook={props.onMoveBook} />
     </div>
     <div className="book-title">{props.book.title}</div>
-    <div className="book-authors">{props.book.authors}</div>
+    {props.book.authors.map((author) => (
+      <div className="book-authors" key={author}>{author}</div>
+    ))}
   </div>
 )
 

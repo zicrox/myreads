@@ -3,7 +3,6 @@ import Book from './Book'
 
 const Bookshelf = (props) => (
     <div className="bookshelf">
-      {/* <h2 className="bookshelf-title">{props.bookshelfs[props.index].title}</h2> */}
       <h2 className="bookshelf-title">{props.bookshelf.title}</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">

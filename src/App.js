@@ -109,16 +109,24 @@ class BooksApp extends React.Component {
       [bookshelfDestiny]: state[bookshelfDestiny].concat(book),
       // Remove
       [bookshelf.key]: state[bookshelf.key].filter((b) => b.title !== book.title)
-    }))
+    }));
+    console.log(bookshelfDestiny);
+    console.log(bookshelf.key);
+    console.log(book);
+    BooksAPI.update(book, bookshelfDestiny).then((update) => {
+      console.log("BooksAPI.update:");
+      console.log(update);
+    });
   }
   
   componentDidMount(){
-    BooksAPI.getAll().then((books) => { 
+    BooksAPI.getAll().then((books) => {
       // Format api response
-      console.log("BooksAPI.getAll response:");
+      console.log("BooksAPI.getAll:");
       this.state.bookshelfs.forEach((bookshelf) => {
         const bookFilter = books.filter((book) => book.shelf === bookshelf.key).map((book) => {
           const bookReformat = {
+            id: book.id,
             title: book.title, 
             authors: book.authors, 
             cover: {

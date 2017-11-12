@@ -7,7 +7,7 @@ const Bookshelf = (props) => (
       <div className="bookshelf-books">
         <ol className="books-grid">
           {props.books.map((book, index) => (
-            <li key={book.title || index}>
+            <li key={book.id || index}>
               <Book
                 book={book}
                 bookshelfs={props.bookshelfs}

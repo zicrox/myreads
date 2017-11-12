@@ -8,8 +8,7 @@ import './App.css'
 class BooksApp extends React.Component {
   state = initState;
 
-  moveBook = (event, bookshelf, book) => {
-    const bookshelfDestiny = event.target.value;
+  moveBook = (bookshelfDestiny, bookshelf, book) => {
     this.setState((state) => ({
       // Add
       //[bookshelfDestiny]: [...state[bookshelfDestiny], book]
@@ -20,6 +19,38 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, bookshelfDestiny).then((update) => {
       console.log("BooksAPI.update:");
       console.log(update);
+    });
+  }
+  
+  searchBook = (query) => {
+    // Update input value
+    this.setState({ searchQuery: query.trim() });
+    this.setState({ searchStatus: 'Searching...' });
+    this.setState({ 'searchResults': [] })
+    if(!query){
+      return;
+    }
+    BooksAPI.search(query, 20).then((books) => {
+      console.log("BooksAPI.search: "+query);
+      const bookFilter = books.map((book) => {
+        const defaultCover = 'http://librosebooks.org/img/xggS7:XXBBB.vVq0xE.W8C.ClXCi0EVXWVgVu8vXS180jWgXWVWxiXtXECVviXc9nl9nnXF0aP3iVkcc9290n30Mi9ak302PtcMiF9XEXCXECVvi_ttM9_t_tMcF29.fSv.png'
+        const coverImage = book.imageLinks ? book.imageLinks.thumbnail : defaultCover;
+        const bookReformat = {
+          id: book.id,
+          title: book.title, 
+          authors: book.authors || [], 
+          cover: {
+            "width": 128,
+            "height": 192,
+            "backgroundImage": "url("+coverImage+")"
+          }
+        }
+        return bookReformat;
+      })
+      this.setState({ 'searchResults': bookFilter });
+    }).catch((err) => {
+      this.setState({ 'searchResults': [] });
+      this.setState({ searchStatus: 'No results' })
     });
   }
   
@@ -60,7 +91,7 @@ class BooksApp extends React.Component {
                 .map((bookshelf) => (
                 <Bookshelf key={bookshelf.key}
                   books={this.state[bookshelf.key]}
-                  bookshelfs={this.state.bookshelfs}
+                  bookshelfs={this.state.bookshelfs.filter((bookshelf) => bookshelf.key !== 'searchResults')}
                   bookshelf={bookshelf}
                   onMoveBook={this.moveBook}
                 />
@@ -87,41 +118,24 @@ class BooksApp extends React.Component {
                 <input
                   type="text"
                   placeholder="Search by title or author"
-                  onChange={(event) => {
-                    BooksAPI.search(event.target.value, 20).then((books) => {
-                      console.log("BooksAPI.search:");
-                      const bookFilter = books.map((book) => {
-                        const defaultCover = 'http://librosebooks.org/img/xggS7:XXBBB.vVq0xE.W8C.ClXCi0EVXWVgVu8vXS180jWgXWVWxiXtXECVviXc9nl9nnXF0aP3iVkcc9290n30Mi9ak302PtcMiF9XEXCXECVvi_ttM9_t_tMcF29.fSv.png'
-                        const coverImage = book.imageLinks ? book.imageLinks.thumbnail : defaultCover;
-                        const bookReformat = {
-                          id: book.id,
-                          title: book.title, 
-                          authors: book.authors || [], 
-                          cover: {
-                            "width": 128,
-                            "height": 192,
-                            "backgroundImage": "url("+coverImage+")"
-                          }
-                        }
-                        return bookReformat;
-                      })
-                      this.setState({ 'searchResults': bookFilter }) 
-                    })
-                  }}
+                  value={this.state.searchQuery}
+                  onChange={(event) => this.searchBook(event.target.value)}
                 />
               </div>
             </div>
-            <div className="list-books-content">
-              {this.state.bookshelfs
+            <div className="search-books-results">
+              {this.state.searchResults.length !== 0 ?
+                this.state.bookshelfs
                 .filter((bookshelf) => bookshelf.key === 'searchResults')
                 .map((bookshelf) => (
                 <Bookshelf key={bookshelf.key}
                   books={this.state[bookshelf.key]}
-                  bookshelfs={this.state.bookshelfs}
+                  bookshelfs={this.state.bookshelfs.filter((bookshelf) => bookshelf.key !== 'searchResults')}
                   bookshelf={bookshelf}
                   onMoveBook={this.moveBook}
                 />
-              ))}
+              )) : this.state.searchQuery !== "" && 
+              <h2>{this.state.searchStatus}</h2>}
             </div>
             {/* <div className="search-books-results">
               <ol className="books-grid"></ol>

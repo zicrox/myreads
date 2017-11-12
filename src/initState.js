@@ -1,5 +1,8 @@
 export default {
 
+  searchQuery: "",
+  searchStatus: "",
+  
   bookshelfs: [
     {
       "title":"Currently Reading",
@@ -82,25 +85,6 @@ export default {
     }
   ],
   
-  searchResults: [
-    {
-      "cover": {
-        "width": 128,
-        "height": 193,
-        "backgroundImage": 'url("https://icons8.com/preloaders/img/favicons/favicon-194x194.png")'
-      },
-      "title": "",
-      "authors": [""]
-    },
-    {
-      "cover": {
-        "width": 128,
-        "height": 193,
-        "backgroundImage": 'url("https://icons8.com/preloaders/img/favicons/favicon-194x194.png")'
-      },
-      "title": "",
-      "authors": [""]
-    }
-  ]
+  searchResults: []
   
 }

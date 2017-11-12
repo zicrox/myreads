@@ -12,6 +12,10 @@ export default {
     {
       "title":"Read",
       "key":"read"
+    },
+    {
+      "title":"Search Results",
+      "key":"searchResults"
     }
   ],
 
@@ -76,5 +80,27 @@ export default {
       "title": "",
       "authors": [""]
     }
+  ],
+  
+  searchResults: [
+    {
+      "cover": {
+        "width": 128,
+        "height": 193,
+        "backgroundImage": 'url("https://icons8.com/preloaders/img/favicons/favicon-194x194.png")'
+      },
+      "title": "",
+      "authors": [""]
+    },
+    {
+      "cover": {
+        "width": 128,
+        "height": 193,
+        "backgroundImage": 'url("https://icons8.com/preloaders/img/favicons/favicon-194x194.png")'
+      },
+      "title": "",
+      "authors": [""]
+    }
   ]
+  
 }

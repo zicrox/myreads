@@ -41,7 +41,6 @@ class BooksApp extends React.Component {
           }
           return bookReformat;
         });
-        console.log({ [bookshelf.key]: bookFilter });
         this.setState({ [bookshelf.key]: bookFilter }) 
       });
     });  
@@ -50,6 +49,28 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
+        <Route exact path="/" render={() => (
+          <div className="list-books">
+            <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>
+            <div className="list-books-content">
+              {this.state.bookshelfs
+                .filter((bookshelf) => bookshelf.key !== 'searchResults')
+                .map((bookshelf) => (
+                <Bookshelf key={bookshelf.key}
+                  books={this.state[bookshelf.key]}
+                  bookshelfs={this.state.bookshelfs}
+                  bookshelf={bookshelf}
+                  onMoveBook={this.moveBook}
+                />
+              ))}
+            </div>
+            <div className="open-search">
+              <Link to="/search">Add a book</Link>
+            </div>
+          </div>
+        )}/>
         <Route path="/search" render={() => (
           <div className="search-books">
             <div className="search-books-bar">
@@ -63,22 +84,37 @@ class BooksApp extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
-
+                <input
+                  type="text"
+                  placeholder="Search by title or author"
+                  onChange={(event) => {
+                    BooksAPI.search(event.target.value, 20).then((books) => {
+                      console.log("BooksAPI.search:");
+                      const bookFilter = books.map((book) => {
+                        const defaultCover = 'http://librosebooks.org/img/xggS7:XXBBB.vVq0xE.W8C.ClXCi0EVXWVgVu8vXS180jWgXWVWxiXtXECVviXc9nl9nnXF0aP3iVkcc9290n30Mi9ak302PtcMiF9XEXCXECVvi_ttM9_t_tMcF29.fSv.png'
+                        const coverImage = book.imageLinks ? book.imageLinks.thumbnail : defaultCover;
+                        const bookReformat = {
+                          id: book.id,
+                          title: book.title, 
+                          authors: book.authors || [], 
+                          cover: {
+                            "width": 128,
+                            "height": 192,
+                            "backgroundImage": "url("+coverImage+")"
+                          }
+                        }
+                        return bookReformat;
+                      })
+                      this.setState({ 'searchResults': bookFilter }) 
+                    })
+                  }}
+                />
               </div>
             </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
-        )}/>
-        <Route exact path="/" render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
             <div className="list-books-content">
-              {this.state.bookshelfs.map((bookshelf) => (
+              {this.state.bookshelfs
+                .filter((bookshelf) => bookshelf.key === 'searchResults')
+                .map((bookshelf) => (
                 <Bookshelf key={bookshelf.key}
                   books={this.state[bookshelf.key]}
                   bookshelfs={this.state.bookshelfs}
@@ -87,9 +123,9 @@ class BooksApp extends React.Component {
                 />
               ))}
             </div>
-            <div className="open-search">
-              <Link to="/search">Add a book</Link>
-            </div>
+            {/* <div className="search-books-results">
+              <ol className="books-grid"></ol>
+            </div> */}
           </div>
         )}/>
       </div>

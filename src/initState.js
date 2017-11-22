@@ -19,6 +19,10 @@ export default {
     {
       "title":"Search Results",
       "key":"searchResults"
+    },
+    {
+      "title":"None",
+      "key":"none"
     }
   ],
 

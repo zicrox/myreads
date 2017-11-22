@@ -9,13 +9,18 @@ class BooksApp extends React.Component {
   state = initState;
 
   moveBook = (bookshelfDestiny, bookshelf, book) => {
-    this.setState((state) => ({
+    // Remove
+    if (bookshelf.key !== 'searchResults') {
+      this.setState((state) => ({
+        [bookshelf.key]: state[bookshelf.key].filter((b) => b.title !== book.title)
+      }));
+    }
+    if (bookshelfDestiny !== 'none') {
       // Add
-      //[bookshelfDestiny]: [...state[bookshelfDestiny], book]
-      [bookshelfDestiny]: state[bookshelfDestiny].concat(book),
-      // Remove
-      [bookshelf.key]: state[bookshelf.key].filter((b) => b.title !== book.title)
-    }));
+      this.setState((state) => ({
+        [bookshelfDestiny]: state[bookshelfDestiny].concat(book)
+      }));
+    }
     BooksAPI.update(book, bookshelfDestiny).then((update) => {
       console.log("BooksAPI.update:");
       console.log(update);
@@ -24,9 +29,11 @@ class BooksApp extends React.Component {
   
   searchBook = (query) => {
     // Update input value
-    this.setState({ searchQuery: query.trim() });
-    this.setState({ searchStatus: 'Searching...' });
-    this.setState({ 'searchResults': [] })
+    this.setState({
+      searchQuery: query.trim(),
+      searchStatus: 'Searching...',
+      searchResults: []
+    });
     if(!query){
       return;
     }
@@ -49,8 +56,7 @@ class BooksApp extends React.Component {
       })
       this.setState({ 'searchResults': bookFilter });
     }).catch((err) => {
-      this.setState({ 'searchResults': [] });
-      this.setState({ searchStatus: 'No results' })
+      this.setState({ searchResults: [], searchStatus: 'No results' });
     });
   }
   
@@ -87,7 +93,7 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               {this.state.bookshelfs
-                .filter((bookshelf) => bookshelf.key !== 'searchResults')
+                .filter((bookshelf) => bookshelf.key !== 'searchResults' && bookshelf.key !== 'none')
                 .map((bookshelf) => (
                 <Bookshelf key={bookshelf.key}
                   books={this.state[bookshelf.key]}
@@ -137,9 +143,6 @@ class BooksApp extends React.Component {
               )) : this.state.searchQuery !== "" && 
               <h2>{this.state.searchStatus}</h2>}
             </div>
-            {/* <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div> */}
           </div>
         )}/>
       </div>

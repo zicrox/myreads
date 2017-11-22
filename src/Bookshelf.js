@@ -12,7 +12,9 @@ const Bookshelf = (props) => (
                 book={book}
                 bookshelfs={props.bookshelfs}
                 bookshelf={props.bookshelf}
-                onMoveBook={props.onMoveBook} />
+                onMoveBook={props.onMoveBook}
+                onSearchShelf={props.onSearchShelf}
+              />
             </li>
           ))}
         </ol>

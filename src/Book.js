@@ -9,7 +9,9 @@ const Book = (props) => (
         bookshelfs={props.bookshelfs}
         bookshelf={props.bookshelf}
         book={props.book}
-        onMoveBook={props.onMoveBook} />
+        onMoveBook={props.onMoveBook}
+        onSearchShelf={props.onSearchShelf}
+      />
     </div>
     <div className="book-title">{props.book.title}</div>
     {props.book.authors.map((author) => (

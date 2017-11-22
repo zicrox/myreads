@@ -8,15 +8,21 @@ import './App.css'
 class BooksApp extends React.Component {
   state = initState;
 
-  moveBook = (bookshelfDestiny, bookshelf, book) => {
-    // Remove
+  moveBook = (bookshelfDestiny, bookshelf, shelfFound, book) => {
+    // Remove from no search bookshelf
     if (bookshelf.key !== 'searchResults') {
       this.setState((state) => ({
         [bookshelf.key]: state[bookshelf.key].filter((b) => b.title !== book.title)
       }));
     }
+    // Remove from search bookshelf
+    if (bookshelf.key === 'searchResults' && shelfFound !== 'none') {
+      this.setState((state) => ({
+        [shelfFound]: state[shelfFound].filter((b) => b.title !== book.title)
+      }));
+    }
+    // Add
     if (bookshelfDestiny !== 'none') {
-      // Add
       this.setState((state) => ({
         [bookshelfDestiny]: state[bookshelfDestiny].concat(book)
       }));
@@ -60,6 +66,20 @@ class BooksApp extends React.Component {
     });
   }
   
+  searchShelf = (bookId) => {
+    let shelfFound = 'none';
+    if (bookId) {
+      this.state.bookshelfs
+        .filter((bookshelf) => bookshelf.key !== 'searchResults' && bookshelf.key !== 'none')
+        .forEach((bookshelf) => {
+          if(this.state[bookshelf.key].find((book) => book.id === bookId)){
+            shelfFound = bookshelf.key
+          }
+        });
+    }
+    return shelfFound;
+  }
+  
   componentDidMount(){
     BooksAPI.getAll().then((books) => {
       // Format api response
@@ -100,6 +120,7 @@ class BooksApp extends React.Component {
                   bookshelfs={this.state.bookshelfs.filter((bookshelf) => bookshelf.key !== 'searchResults')}
                   bookshelf={bookshelf}
                   onMoveBook={this.moveBook}
+                  onSearchShelf={this.searchShelf}
                 />
               ))}
             </div>
@@ -139,6 +160,7 @@ class BooksApp extends React.Component {
                   bookshelfs={this.state.bookshelfs.filter((bookshelf) => bookshelf.key !== 'searchResults')}
                   bookshelf={bookshelf}
                   onMoveBook={this.moveBook}
+                  onSearchShelf={this.searchShelf}
                 />
               )) : this.state.searchQuery !== "" && 
               <h2>{this.state.searchStatus}</h2>}

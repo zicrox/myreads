@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, Route } from 'react-router-dom'
+import debounce from 'lodash/debounce'
 import initState from './initState'
 import Bookshelf from './Bookshelf'
 import * as BooksAPI from './BooksAPI'
@@ -43,6 +44,12 @@ class BooksApp extends React.Component {
     if(!query){
       return;
     }
+    // Call debounce search 
+    this._debounceSearchBook(query)
+  }
+  
+  // Private method for "searchBook" with "debounce"
+  _debounceSearchBook = debounce((query) => {
     BooksAPI.search(query, 20).then((books) => {
       console.log("BooksAPI.search: "+query);
       const bookFilter = books.map((book) => {
@@ -64,7 +71,7 @@ class BooksApp extends React.Component {
     }).catch((err) => {
       this.setState({ searchResults: [], searchStatus: 'No results' });
     });
-  }
+  },300);
   
   searchShelf = (bookId) => {
     let shelfFound = 'none';

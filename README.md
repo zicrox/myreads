@@ -1,8 +1,18 @@
 # MyReads Project
 
-This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
+<img src="https://raw.githubusercontent.com/zicrox/myreads/master/docs/main.png" align="left" height="588" width="400" >
+<img src="https://raw.githubusercontent.com/zicrox/myreads/master/docs/search.png" height="588" width="400" >
 
-Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.
+### Project Overview
+
+This is the final assessment project for Udacity's React Fundamentals course.
+
+In the MyReads project, you'll create a bookshelf app that allows you to select and categorize books you have read, are currently reading, or want to read. The project emphasizes using React to build the application and provides an API server and client library that you will use to persist information as you interact with the application.
+
+### Extras
+
+* Added **debounce logic** in "search book" section: this will allow only one request per time period.
+* Initial state with bookshelfs mocks until api response.
 
 ## TL;DR
 
@@ -11,7 +21,7 @@ To get started developing right away:
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
-## What You're Getting
+## What you're getting with the template
 ```bash
 ├── CONTRIBUTING.md
 ├── README.md - This file.
@@ -86,8 +96,3 @@ The backend API uses a fixed set of cached search results and is limited to a pa
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find more information on how to perform common tasks [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
-## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
